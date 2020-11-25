@@ -6,7 +6,7 @@
 // response data for testing purposes. Your connection label can access any data
 // from the returned response using the `json.` prefix. eg: `{{json.username}}`.
 const test = (z, bundle) =>
-  z.request({ url: 'https://auth-json-server.zapier-staging.com/me' });
+  z.request({ url: 'https://api.fintoc.com/v1/links' });
 
 // This function runs after every outbound request. You can use it to check for
 // errors or modify the response. You can have as many as you need. They'll need
@@ -27,14 +27,7 @@ const handleBadResponses = (response, z, bundle) => {
 // This function runs before every outbound request. You can have as many as you
 // need. They'll need to each be registered in your index.js file.
 const includeApiKey = (request, z, bundle) => {
-  if (bundle.authData.apiKey) {
-    // Use these lines to include the API key in the querystring
-    request.params = request.params || {};
-    request.params.api_key = bundle.authData.apiKey;
-
-    // If you want to include the API key in the header instead, uncomment this:
-    // request.headers.Authorization = bundle.authData.apiKey;
-  }
+  request.headers.Authorization = bundle.authData.apiKey;
 
   return request;
 };
@@ -60,7 +53,7 @@ module.exports = {
     // be `{{X}}`. This can also be a function that returns a label. That function has
     // the standard args `(z, bundle)` and data returned from the test can be accessed
     // in `bundle.inputData.X`.
-    connectionLabel: '{{json.username}}',
+    // connectionLabel: '{{json.username}}',
   },
   befores: [includeApiKey],
   afters: [handleBadResponses],
