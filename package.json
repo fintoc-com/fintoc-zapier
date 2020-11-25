@@ -10,7 +10,8 @@
     "zapier-platform-core": "10.1.2"
   },
   "devDependencies": {
-    "jest": "^25.5.3"
+    "jest": "^25.5.3",
+    "nock": "^13.0.5"
   },
   "private": true
 }
