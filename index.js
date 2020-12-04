@@ -6,6 +6,8 @@ const {
 
 const movementResource = require("./resources/movement");
 
+const accountResource = require("./resources/account");
+
 module.exports = {
   // This is just shorthand to reference the installed dependencies you have.
   // Zapier will need to know these before we can upload.
@@ -29,5 +31,6 @@ module.exports = {
 
   resources: {
     [movementResource.key]: movementResource,
+    [accountResource.key]: accountResource
   },
 };
