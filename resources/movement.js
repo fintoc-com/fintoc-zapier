@@ -1,3 +1,8 @@
+const { getNext } = require('../lib/pagination.js');
+
+const MOVEMENTS_PER_PAGE = 300;
+const MAX_REQUESTS = 10;
+
 const transform = (movement) => {
   return {
     'id': movement.id,
@@ -31,10 +36,29 @@ const listMovements = async (z, bundle) => {
   const response = await z.request({
     url: `https://api.fintoc.com/v1/accounts/${bundle.inputData.account_id}/movements`,
     params: {
-      link_token: bundle.inputData.link_token
+      link_token: bundle.inputData.link_token,
+      per_page: MOVEMENTS_PER_PAGE
     }
   });
-  return response.data.map((movement) => transform(movement))
+
+  let results = response.data;
+  let nextUrl = getNext(response.getHeader('link'));
+  let requestsCount = 0;
+
+  while (nextUrl && requestsCount < MAX_REQUESTS) {
+    const response = await z.request({
+      url: nextUrl,
+      params: {
+        link_token: bundle.inputData.link_token,
+        per_page: MOVEMENTS_PER_PAGE
+      }
+    });
+    results = results.concat(response.data)
+    nextUrl = getNext(response.getHeader('link'))
+    requestsCount++
+  }
+
+  return results.map((movement) => transform(movement))
 };
 
 const sample = {
