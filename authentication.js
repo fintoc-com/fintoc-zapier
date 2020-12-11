@@ -32,6 +32,10 @@ const includeApiKey = (request, z, bundle) => {
   return request;
 };
 
+const getConnectionLabel = (z, bundle) => {
+  return `${bundle.authData.apiKey.slice(0, 15)}...`;
+};
+
 module.exports = {
   config: {
     // "custom" is the catch-all auth type. The user supplies some info and Zapier can
@@ -40,7 +44,14 @@ module.exports = {
 
     // Define any input app's auth requires here. The user will be prompted to enter
     // this info when they connect their account.
-    fields: [{ key: 'apiKey', label: 'API Key', required: true }],
+    fields: [
+      {
+        key: 'apiKey',
+        label: 'API Key',
+        helpText: 'You can view and manage your API keys in the [Fintoc Dashboard](https://app.fintoc.com/api-keys).',
+        required: true
+      }
+    ],
 
     // The test method allows Zapier to verify that the credentials a user provides
     // are valid. We'll execute this method whenver a user connects their account for
@@ -53,7 +64,7 @@ module.exports = {
     // be `{{X}}`. This can also be a function that returns a label. That function has
     // the standard args `(z, bundle)` and data returned from the test can be accessed
     // in `bundle.inputData.X`.
-    // connectionLabel: '{{json.username}}',
+    connectionLabel: getConnectionLabel,
   },
   befores: [includeApiKey],
   afters: [handleBadResponses],
