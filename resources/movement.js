@@ -70,8 +70,17 @@ const sample = {
   'currency': 'CLP',
   'referenceId': '123740123',
   'type': 'other',
-  'recipientAccount': {},
-  'senderAccount': {},
+  'recipientAccount': null,
+  'senderAccount': {
+    'holder_id': '771806538',
+    'holder_name': 'Comercial y Producción SpA',
+    'number': '1530108000',
+    'institution': {
+      'id': 'cl_banco_de_chile',
+      'name': 'Banco de Chile',
+      'country': 'cl'
+    }
+  },
   'comment': 'Comentario genérico'
 };
 
@@ -82,7 +91,7 @@ module.exports = {
   list: {
     display: {
       label: 'New Movement',
-      description: 'Lists the movements.',
+      description: 'Triggers when a new movement is found.',
     },
     operation: {
       inputFields: [
@@ -104,15 +113,26 @@ module.exports = {
 
   outputFields: [
     {key: 'id', label: 'ID'},
-    {key: 'amount', label: 'Amount'},
+    {key: 'amount', label: 'Amount', type: 'integer'},
     {key: 'postDate', label: 'Post Date'},
     {key: 'description', label: 'Description'},
     {key: 'transactionDate', label: 'Transaction Date'},
     {key: 'currency', label: 'Currency'},
     {key: 'referenceId', label: 'Reference ID'},
     {key: 'type', label: 'Type'},
-    {key: 'recipientAccount', label: 'Recipient Account'},
-    {key: 'senderAccount', label: 'Sender Account'},
     {key: 'comment', label: 'Comment'},
+    {key: 'recipientAccount', label: 'Recipient Account'},
+    {key: 'recipientAccount__holder_id', label: 'Recipient Account Holder ID'},
+    {key: 'recipientAccount__holder_name', label: 'Recipient Account Holder Name'},
+    {key: 'recipientAccount__number', label: 'Recipient Account Number'},
+    {key: 'recipientAccount__institution__id', label: 'Recipient Account Insitution ID'},
+    {key: 'recipientAccount__institution__name', label: 'Recipient Account Insitution Name'},
+    {key: 'recipientAccount__institution__country', label: 'Recipient Account Insitution Country'},
+    {key: 'senderAccount__holder_id', label: 'Sender Account Holder ID'},
+    {key: 'senderAccount__holder_name', label: 'Sender Account Holder Name'},
+    {key: 'senderAccount__number', label: 'Sender Account Number'},
+    {key: 'senderAccount__institution__id', label: 'Sender Account Insitution ID'},
+    {key: 'senderAccount__institution__name', label: 'Sender Account Insitution Name'},
+    {key: 'senderAccount__institution__country', label: 'Sender Account Insitution Country'}
   ]
 };
