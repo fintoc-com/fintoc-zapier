@@ -82,7 +82,7 @@ module.exports = {
   list: {
     display: {
       label: 'New Movement',
-      description: 'Lists the movements.',
+      description: 'Triggers when a new movement is found.',
     },
     operation: {
       inputFields: [
