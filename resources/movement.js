@@ -121,7 +121,6 @@ module.exports = {
     {key: 'referenceId', label: 'Reference ID'},
     {key: 'type', label: 'Type'},
     {key: 'comment', label: 'Comment'},
-    {key: 'recipientAccount', label: 'Recipient Account'},
     {key: 'recipientAccount__holder_id', label: 'Recipient Account Holder ID'},
     {key: 'recipientAccount__holder_name', label: 'Recipient Account Holder Name'},
     {key: 'recipientAccount__number', label: 'Recipient Account Number'},
