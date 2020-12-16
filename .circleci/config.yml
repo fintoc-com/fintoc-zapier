@@ -1,0 +1,63 @@
+version: 2.1
+commands:
+  setup:
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - npm-dependencies-{{ checksum "package-lock.json" }}
+          - npm-dependencies-
+
+      - run:
+          name: Install npm dependencies
+          command: npm install
+
+      - save_cache:
+          key: npm-dependencies-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Install zapier cli
+          command: npm install --prefix=$HOME/.local --global zapier-platform-cli
+jobs:
+  test:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - setup
+
+      - run:
+          name: Run tests
+          command: zapier test
+  deploy:
+    docker:
+      - image: circleci/node:12
+        environment:
+          ZAPIER_DEPLOY_KEY: $ZAPIER_DEPLOY_KEY
+    steps:
+      - setup
+
+      - run:
+          name: Deploy app
+          command: zapier push
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: master
+  test_and_deploy:
+    jobs:
+      - test:
+          filters: &filters-master
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - test
+          filters:
+            <<: *filters-master
