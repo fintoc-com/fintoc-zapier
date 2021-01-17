@@ -5,9 +5,11 @@
 // By returning the entire request object, you have access to the request and
 // response data for testing purposes. Your connection label can access any data
 // from the returned response using the `json.` prefix. eg: `{{json.username}}`.
-const test = (z, bundle) =>
-  z.request({ url: 'https://api.fintoc.com/v1/links' });
-
+const test = async (z, bundle) => {
+  return z.request({
+    url: `https://api.fintoc.com/v1/links/${bundle.authData.linkToken}`
+  });
+}
 // This function runs after every outbound request. You can use it to check for
 // errors or modify the response. You can have as many as you need. They'll need
 // to each be registered in your index.js file.
@@ -16,6 +18,13 @@ const handleBadResponses = (response, z, bundle) => {
     throw new z.errors.Error(
       // This message is surfaced to the user
       'The API Key you supplied is incorrect',
+      'AuthenticationError',
+      response.status
+    );
+  }
+  if (response.status === 403 && response.data.error.code === 'invalid_link_token') {
+    throw new z.errors.Error(
+      'The Link Token you supplied is incorrect',
       'AuthenticationError',
       response.status
     );
@@ -33,7 +42,9 @@ const includeApiKey = (request, z, bundle) => {
 };
 
 const getConnectionLabel = (z, bundle) => {
-  return `${bundle.authData.apiKey.slice(0, 15)}...`;
+  const institution = bundle.inputData.data.institution.name;
+  const holderId = bundle.inputData.data.holder_id;
+  return `${institution} - ${holderId}`;
 };
 
 module.exports = {
@@ -49,6 +60,12 @@ module.exports = {
         key: 'apiKey',
         label: 'API Key',
         helpText: 'You can view and manage your API keys in the [Fintoc Dashboard](https://app.fintoc.com/api-keys).',
+        required: true
+      },
+      {
+        key: 'linkToken',
+        label: 'Link token',
+        helpText: 'The token given from Fintoc when a Link is created. For more more information check the [docs](https://docs.fintoc.com/docs/conceptos#link-token)',
         required: true
       }
     ],

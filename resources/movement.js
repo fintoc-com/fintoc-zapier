@@ -20,7 +20,7 @@ const transform = (movement) => {
 }
 
 const accountFields = (z, bundle) => {
-  if (bundle.inputData.link_token) {
+  if (bundle.authData.linkToken) {
     return [{
       key: 'account_id',
       label: 'Account id',
@@ -36,7 +36,7 @@ const listMovements = async (z, bundle) => {
   const response = await z.request({
     url: `https://api.fintoc.com/v1/accounts/${bundle.inputData.account_id}/movements`,
     params: {
-      link_token: bundle.inputData.link_token,
+      link_token: bundle.authData.linkToken,
       per_page: MOVEMENTS_PER_PAGE
     }
   });
@@ -49,7 +49,7 @@ const listMovements = async (z, bundle) => {
     const response = await z.request({
       url: nextUrl,
       params: {
-        link_token: bundle.inputData.link_token,
+        link_token: bundle.authData.linkToken,
         per_page: MOVEMENTS_PER_PAGE
       }
     });
@@ -95,13 +95,6 @@ module.exports = {
     },
     operation: {
       inputFields: [
-        {
-          key: 'link_token',
-          label: 'Link token',
-          helpText: 'The token given from Fintoc when a Link is created',
-          required: true,
-          altersDynamicFields: true
-        },
         accountFields,
       ],
 

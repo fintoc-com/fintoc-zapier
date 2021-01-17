@@ -30,7 +30,7 @@ describe('Movement', () => {
 
   it('should GET movements endpoint and transform result', async () => {
 
-    const bundle = { inputData: { account_id: '1', link_token: '12345' } };
+    const bundle = { authData: { linkToken: '12345' }, inputData: { account_id: '1' } };
     const response = await appTester(App.resources.movement.list.operation.perform, bundle);
 
     expect(response).toEqual(
@@ -65,7 +65,7 @@ describe('Movement', () => {
         .query({ link_token: '12345', per_page: 300 })
         .reply(200, [{ id: 2 }], { 'Link': linkHeader2 });
 
-      const bundle = { inputData: { account_id: '1', link_token: '12345' } };
+      const bundle = { authData: { linkToken: '12345' }, inputData: { account_id: '1' } };
       const response = await appTester(App.resources.movement.list.operation.perform, bundle);
 
       expect(response).toHaveLength(2);

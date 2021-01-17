@@ -17,7 +17,7 @@ const listAccounts = async (z, bundle) => {
   const response = await z.request({
     url: 'https://api.fintoc.com/v1/accounts',
     params: {
-      link_token: bundle.inputData.link_token
+      link_token: bundle.authData.linkToken
     }
   });
   return response.data.map((account) => transform(account))
@@ -36,14 +36,6 @@ module.exports = {
     },
     operation: {
       perform: listAccounts,
-      inputFields: [
-        {
-          key: 'link_token',
-          label: 'Link token',
-          helpText: 'The token given from Fintoc when a Link is created',
-          required: true
-        }
-      ]
     }
   },
 

@@ -33,7 +33,7 @@ describe('Account', () => {
 
   it('should GET accounts endpoint and transform result', async () => {
 
-    const bundle = { inputData: { link_token: '12345' } };
+    const bundle = { authData: { linkToken: '12345' } };
     const response = await appTester(App.resources.account.list.operation.perform, bundle);
 
     expect(response).toEqual(
