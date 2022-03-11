@@ -49,15 +49,15 @@ workflows:
       - test:
           filters:
             branches:
-              ignore: master
+              ignore: main
   test_and_deploy:
     jobs:
       - test:
-          filters: &filters-master
+          filters: &filters-main
             branches:
-              only: master
+              only: main
       - deploy:
           requires:
             - test
           filters:
-            <<: *filters-master
+            <<: *filters-main
